@@ -7,6 +7,7 @@ const urlPage = new URLSearchParams(window.location.search),
         kanapPrice = document.querySelector("#price"),
         imgKanap = document.querySelector(".item__img"),
         descKanap = document.querySelector("#description"),
+        champComplet = document.querySelector(".item"),
         colorKanap = document.querySelector("#colors");
         kanapQuantity = document.querySelector("#quantity");
         
@@ -19,8 +20,8 @@ let getKanap = function () {
 fetch(url) // récupère les données contenues dans l'api (ici le catalogue de canapé et leurs détails)
   .then((response) => response.json ())
   .then((kanap) => {
-    console.table(kanap);
-
+    // console.table(kanap);
+if (kanap.name !=undefined){
     // Affichage des infos dans chaque champ
         kanapName.innerHTML = kanap.name;
         kanapPrice.innerHTML = kanap.price;
@@ -32,11 +33,13 @@ fetch(url) // récupère les données contenues dans l'api (ici le catalogue de 
           option.innerHTML = color;
           option.value = color;
           colorKanap.appendChild(option)
-        });
+        })
+      }else{
+        champComplet.innerHTML = "<H1>Ce canapé n'existe plus<br><br><br><a href=index.html><H2>Nous vous invitons à vous rendre sur le catalogue afin de seléctionner un nouveau produit</h2></a></h1>";
+      };
 // Déclaration du bouton et ajout d'un événement au click sur le bouton //
 
-let boutonAjout = document.querySelector('#addToCart'),
-msgTest = "Test bouton";
+let boutonAjout = document.querySelector('#addToCart');
 
 boutonAjout.addEventListener('click',()=> {addPanier({id:ID,"color":colorKanap.value,"quantity":kanapQuantity.value})});
         });
@@ -80,6 +83,7 @@ function addPanier(item){
   } else {
     panier.push(item);
     savePanier(panier);
+    alert('Le produit a bien été ajouté au panier');
     }
   }
 }
