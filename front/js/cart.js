@@ -57,12 +57,17 @@ let getKanap = function () {
       } );
       let change = document.querySelectorAll(".itemQuantity");
         change.forEach((chgBtn,i) => {chgBtn.addEventListener("change",() => {
-          console.log(items[i].quantity); // Quantité déja présente dans le panier 
-          console.log(chgBtn.value); // Nouvelle quantité 
+          // console.log(items[i].quantity); // Quantité déja présente dans le panier 
+          // console.log(chgBtn.value); // Nouvelle quantité 
+          if (chgBtn.value > 0 && chgBtn.value < 100){
           items[i].quantity = chgBtn.value;
           localStorage.setItem('panier',JSON.stringify(items));
           blocItem.innerHTML = '';
-          getKanap();   
+          getKanap();}
+          else {
+            alert('La quantité pour un produit doit se situer entre 1 et 100');
+            chgBtn.value = items[i].quantity;
+          }
         })
       });      
     })
@@ -114,27 +119,27 @@ let   checkFirstName = false,
 
 
 
-btnfirstName.addEventListener("keypress",(p) => {
+btnfirstName.addEventListener("keydown",(p) => {
   p = regexFirstName.test(btnfirstName.value);
   firstNameErrorMsg.innerHTML = p ? "" : "Merci de saisir le nom"
   checkFirstName = p? true : false 
 })
-btnlastName.addEventListener("keypress",(p) => {
+btnlastName.addEventListener("keydown",(p) => {
   p = regexlastName.test(btnlastName.value);
   lastNameErrorMsg.innerHTML = p ? "" : "Merci de saisir le nom"
   checklastName = p? true : false 
 })
-btnAddress.addEventListener("keypress",(p) => {
+btnAddress.addEventListener("keydown",(p) => {
   p = regexAddress.test(btnAddress.value);
   addressErrorMsg.innerHTML = p ? "" : "Merci de saisir l'adresse"
   checkAddress = p? true : false 
 })
-btncity.addEventListener("keypress",(p) => {
+btncity.addEventListener("keydown",(p) => {
   p = regexcity.test(btncity.value);
   cityErrorMsg.innerHTML = p ? "" : "Merci de saisir la ville"
   checkCity = p? true : false 
 })
-btnEmail.addEventListener("keypress",(p) => {
+btnEmail.addEventListener("keydown",(p) => {
   p = regexEmail.test(btnEmail.value);
   emailErrorMsg.innerHTML = p ? "" : "Merci de saisir une adresse e-mail"
   checkEmail = p? true : false 
@@ -142,7 +147,7 @@ btnEmail.addEventListener("keypress",(p) => {
       //Validation du formulaire//
       boutonOrder.addEventListener("click",(order) => {
         order.preventDefault();
-        if (checkFirstName) {         
+        if (checkFirstName && checklastName && checkAddress && checkCity && checkEmail && items.length > 0) {  
       let contact ={
           firstName: firstName.value,
           lastName: lastName.value,
@@ -168,7 +173,6 @@ btnEmail.addEventListener("keypress",(p) => {
           window.location.href = `confirmation.html?order=${data.orderId}`
         })
         }else{
-          alert("Merci de compléter le formulaire");
+          alert("Nous vous remercions de véirfier si votre panier est plein et si tous les champs du formulaire sont bien remplis.");
         };
       });
-
